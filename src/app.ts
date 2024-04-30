@@ -31,7 +31,7 @@ app.use(auth);
 app.use('/', cardsRouter);
 app.use('/', usersRouter);
 app.all('/*', notFoundResource);
-app.use(errors()); // обработчик ошибок celebrate
+app.use(errors());
 app.use(errorLogger);
 app.use(errorMiddleware);
 

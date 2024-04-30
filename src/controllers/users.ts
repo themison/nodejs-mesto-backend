@@ -7,12 +7,12 @@ import User from '../models/user';
 import ServerResponseStatutesEnum from '../helpers/server-response-statuses.enum';
 import UniqueDataError, { BadRequestError, NotAuthorizedError, NotFoundError } from '../errors/custom-errors';
 
-export const getUsers = (_req: Request, res: Response, next: NextFunction) => User.find({})
+export const getUsers = (req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.status(ServerResponseStatutesEnum.SUCCESS).send(users))
   .catch((err) => next(err));
 
-export const getMe = (_req: Request, res: Response, next: NextFunction) => {
-  const { user } = _req;
+export const getMe = (req: Request, res: Response, next: NextFunction) => {
+  const { user } = req;
 
   User.findById(user?._id).orFail()
     .then((u) => res.status(ServerResponseStatutesEnum.SUCCESS).send(u))
@@ -21,8 +21,8 @@ export const getMe = (_req: Request, res: Response, next: NextFunction) => {
       : next(err)));
 };
 
-export const getSingleUser = (_req: Request, res: Response, next: NextFunction) => {
-  const { userId } = _req.params;
+export const getSingleUser = (req: Request, res: Response, next: NextFunction) => {
+  const { userId } = req.params;
   return User.find({ _id: userId }).orFail()
     .then((u) => res.status(ServerResponseStatutesEnum.SUCCESS).send(u))
     .catch((err) => (err instanceof mongoose.Error.DocumentNotFoundError
@@ -30,10 +30,10 @@ export const getSingleUser = (_req: Request, res: Response, next: NextFunction) 
       : next(err)));
 };
 
-export const createUser = (_req: Request, res: Response, next: NextFunction) => {
+export const createUser = (req: Request, res: Response, next: NextFunction) => {
   const {
     name, about, avatar, email, password,
-  } = _req.body;
+  } = req.body;
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({
@@ -58,9 +58,9 @@ export const createUser = (_req: Request, res: Response, next: NextFunction) => 
     });
 };
 
-export const updateProfile = (_req: Request, res: Response, next: NextFunction) => {
-  const { name, about, avatar } = _req.body;
-  const { user } = _req;
+export const updateProfile = (req: Request, res: Response, next: NextFunction) => {
+  const { name, about, avatar } = req.body;
+  const { user } = req;
   return User.findByIdAndUpdate(
     user?._id,
     { name, about, avatar },
@@ -78,9 +78,9 @@ export const updateProfile = (_req: Request, res: Response, next: NextFunction) 
     });
 };
 
-export const updateAvatar = (_req: Request, res: Response, next: NextFunction) => {
-  const { avatar } = _req.body;
-  const { user } = _req;
+export const updateAvatar = (req: Request, res: Response, next: NextFunction) => {
+  const { avatar } = req.body;
+  const { user } = req;
   return User.findByIdAndUpdate(user?._id, { avatar }, { new: true, runValidators: true }).orFail()
     .then((u) => res.status(ServerResponseStatutesEnum.POST_SUCCESS).send(u))
     .catch((err) => {
@@ -94,8 +94,8 @@ export const updateAvatar = (_req: Request, res: Response, next: NextFunction) =
     });
 };
 
-export const login = (_req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = _req.body;
+export const login = (req: Request, res: Response, next: NextFunction) => {
+  const { email, password } = req.body;
   return User
     .findOne({ email })
     .select('+password')
@@ -117,7 +117,7 @@ export const login = (_req: Request, res: Response, next: NextFunction) => {
             maxAge: 3600000 * 24,
             sameSite: true,
           })
-          .send({ token });
+          .send();
       });
     })
     .catch(next);

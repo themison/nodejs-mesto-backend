@@ -15,7 +15,7 @@ export class BadRequestError extends Error {
 
   constructor(message: string) {
     super(message);
-    this.statusCode = ServerResponseStatutesEnum.BAD_REQUEST;
+    this.statusCode = ServerResponseStatutesEnum.BADreqUEST;
   }
 }
 
