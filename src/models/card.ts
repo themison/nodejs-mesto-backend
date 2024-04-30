@@ -35,10 +35,10 @@ const cardSchema = new Schema<ICard>({
     ref: 'user',
     default: [],
   }],
-  createdAt: [{
+  createdAt: {
     type: Date,
     default: Date.now(),
-  }],
+  },
 });
 
 export default model<ICard>('card', cardSchema);

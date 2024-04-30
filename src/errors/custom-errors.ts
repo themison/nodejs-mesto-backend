@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import ServerResponseStatutesEnum from '../helpers/server-response-statuses.enum';
 
 export class NotAuthorizedError extends Error {

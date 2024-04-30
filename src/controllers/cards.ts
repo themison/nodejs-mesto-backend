@@ -44,7 +44,7 @@ export const createCard = (_req: Request, res: Response, next: NextFunction) => 
 export const likeCard = (_req: Request, res: Response, next: NextFunction) => {
   const { cardId } = _req.params;
   const { user } = _req;
-  return Card.findByIdAndUpdate(cardId, { $addToSet: { likes: user?._id } }).orFail()
+  return Card.findByIdAndUpdate(cardId, { $addToSet: { likes: user?._id } }, { new: true }).orFail()
     .then((card) => res.status(ServerResponseStatutesEnum.POST_SUCCESS).send(card))
     .catch((err) => (err instanceof mongoose.Error.DocumentNotFoundError
       ? next(new NotFoundError(ErrorMessages.NOT_FOUND)) : next(err)));

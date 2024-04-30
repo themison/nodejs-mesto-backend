@@ -9,7 +9,7 @@ import UniqueDataError, { BadRequestError, NotAuthorizedError, NotFoundError } f
 
 export const getUsers = (_req: Request, res: Response, next: NextFunction) => User.find({})
   .then((users) => res.status(ServerResponseStatutesEnum.SUCCESS).send(users))
-  .catch(() => next());
+  .catch((err) => next(err));
 
 export const getMe = (_req: Request, res: Response, next: NextFunction) => {
   const { user } = _req;
@@ -61,7 +61,11 @@ export const createUser = (_req: Request, res: Response, next: NextFunction) => 
 export const updateProfile = (_req: Request, res: Response, next: NextFunction) => {
   const { name, about, avatar } = _req.body;
   const { user } = _req;
-  return User.findByIdAndUpdate(user?._id, { name, about, avatar }).orFail()
+  return User.findByIdAndUpdate(
+    user?._id,
+    { name, about, avatar },
+    { new: true, runValidators: true },
+  ).orFail()
     .then((u) => res.status(ServerResponseStatutesEnum.POST_SUCCESS).send(u))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
@@ -77,7 +81,7 @@ export const updateProfile = (_req: Request, res: Response, next: NextFunction) 
 export const updateAvatar = (_req: Request, res: Response, next: NextFunction) => {
   const { avatar } = _req.body;
   const { user } = _req;
-  return User.findByIdAndUpdate(user?._id, { avatar }).orFail()
+  return User.findByIdAndUpdate(user?._id, { avatar }, { new: true, runValidators: true }).orFail()
     .then((u) => res.status(ServerResponseStatutesEnum.POST_SUCCESS).send(u))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
