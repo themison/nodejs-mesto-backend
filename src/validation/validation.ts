@@ -14,7 +14,7 @@ export const signUpValidation = celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(200),
-    avatar: Joi.string().uri(),
+    avatar: Joi.string().pattern(linkRegEx),
   }),
 });
 
@@ -22,7 +22,7 @@ export const createCardValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().pattern(linkRegEx),
-  }),
+  }).options({ presence: 'required' }),
 });
 
 export const deleteCardValidation = celebrate({
@@ -47,12 +47,11 @@ export const updateUserValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(200),
-    avatar: Joi.string().pattern(linkRegEx),
-  }),
+  }).options({ presence: 'required' }),
 });
 
 export const updateAvatarValidation = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().pattern(linkRegEx),
-  }),
+  }).options({ presence: 'required' }),
 });

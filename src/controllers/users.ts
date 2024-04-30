@@ -59,11 +59,11 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const updateProfile = (req: Request, res: Response, next: NextFunction) => {
-  const { name, about, avatar } = req.body;
+  const { name, about } = req.body;
   const { user } = req;
   return User.findByIdAndUpdate(
     user?._id,
-    { name, about, avatar },
+    { name, about },
     { new: true, runValidators: true },
   ).orFail()
     .then((u) => res.status(ServerResponseStatutesEnum.POST_SUCCESS).send(u))
