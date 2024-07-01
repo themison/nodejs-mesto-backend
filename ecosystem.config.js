@@ -14,12 +14,12 @@ module.exports = {
   deploy: {
     production: {
       user: DEPLOY_USER,
-      host: DEPLOY_HOST,
+      host: [DEPLOY_HOST],
       ref: DEPLOY_REF,
       ssh_options: "StrictHostKeyChecking=no",
       repo: 'https://github.com/themison/nodejs-mesto-backend.git',
       path: DEPLOY_PATH,
-      'pre-deploy': `scp ./*.env ${DEPLOY_USER}:${DEPLOY_PASS}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
+      'pre-deploy': `scp ./*.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
       'post-deploy': 'npm i && npm run build',
     },
   },
