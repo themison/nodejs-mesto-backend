@@ -18,7 +18,7 @@ const app = express();
 
 const PORT = 3000;
 
-const mongoDbUrl = 'mongodb://localhost:27017/mestodb';
+const mongoDbUrl = 'mongodb://admin:password@localhost:27017/mestodb';
 mongoose.connect(mongoDbUrl);
 
 app.use(express.json());
@@ -33,7 +33,13 @@ app.use('/', usersRouter);
 app.all('/*', notFoundResource);
 app.use(errors());
 app.use(errorLogger);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 app.use(errorMiddleware);
+
 
 app
   .listen(PORT, () => {
