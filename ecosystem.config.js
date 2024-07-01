@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const {
-  DEPLOY_USER, DEPLOY_HOST, DEPLOY_PATH, DEPLOY_REF = 'origin/master',
+  DEPLOY_USER, DEPLOY_PASS, DEPLOY_HOST, DEPLOY_PATH, DEPLOY_REF = 'origin/master',
 } = process.env;
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
       ssh_options: "StrictHostKeyChecking=no",
       repo: 'https://github.com/themison/nodejs-mesto-backend.git',
       path: DEPLOY_PATH,
-      'pre-deploy': `scp ./*.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
+      'pre-deploy': `scp ./*.env ${DEPLOY_USER}:${DEPLOY_PASS}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
       'post-deploy': 'npm i && npm run build',
     },
   },
