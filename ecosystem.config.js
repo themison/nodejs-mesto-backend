@@ -19,7 +19,7 @@ module.exports = {
       ssh_options: "StrictHostKeyChecking=no",
       repo: 'https://github.com/themison/nodejs-mesto-backend.git',
       path: DEPLOY_PATH,
-      'pre-deploy-local': `scp ./README.md ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
+      'pre-deploy-local': `scp ./*.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
       'post-deploy': 'npm i && npm run build',
     },
   },
