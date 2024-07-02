@@ -16,7 +16,7 @@ module.exports = {
       user: DEPLOY_USER,
       host: [DEPLOY_HOST],
       ref: DEPLOY_REF,
-      ssh_options: "StrictHostKeyChecking=no",
+      ssh_options: "oStrictHostKeyChecking=no",
       repo: 'https://github.com/themison/nodejs-mesto-backend.git',
       path: DEPLOY_PATH,
       'pre-deploy': `scp ./README.md ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
